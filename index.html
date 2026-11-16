@@ -1,0 +1,1463 @@
+Maison Du Cake
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Maison Du Cake — премиальная кондитерская в Астане. Авторские торты, макаронс, капкейки и свадебные торты ручной работы.">
+  <title>Maison Du Cake — Премиальная Кондитерская</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ===== TOKENS ===== */
+    :root {
+      --cream: #F7F0E6;
+      --cream-dark: #EDE5D8;
+      --cream-deeper: #E3D9C8;
+      --espresso: #1A1410;
+      --mocha: #3D2B1F;
+      --caramel: #B8843A;
+      --caramel-light: #D4A85C;
+      --blush: #E8C9B5;
+      --sage: #8A9B8E;
+      --white: #FDFAF6;
+
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'Jost', system-ui, sans-serif;
+
+      --ease-silk: cubic-bezier(0.23, 1, 0.32, 1);
+      --ease-gentle: cubic-bezier(0.4, 0, 0.2, 1);
+
+      --max-w: 1320px;
+      --gutter: clamp(1.25rem, 5vw, 5rem);
+      --header-h: 72px;
+    }
+
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      background: var(--cream);
+      color: var(--espresso);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+    ul { list-style: none; }
+
+    /* ===== PAGES ===== */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ===== HEADER ===== */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--header-h);
+      display: flex; align-items: center;
+      padding: 0 var(--gutter);
+      background: rgba(247, 240, 230, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(184, 132, 58, 0.15);
+      transition: box-shadow 0.3s var(--ease-gentle);
+    }
+    header.scrolled { box-shadow: 0 4px 40px rgba(26,20,16,0.08); }
+    .header-inner {
+      width: 100%; margin: 0;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.75rem; font-weight: 600; letter-spacing: 0.12em;
+      color: var(--mocha);
+      cursor: pointer;
+    }
+
+    .logo span { color: var(--caramel); }
+
+    .logo img {
+      height: 48px; width: auto;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+
+    nav { display: flex; gap: 2.25rem; align-items: center; }
+    nav a {
+      font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase;
+      font-weight: 400; color: var(--mocha);
+      position: relative; transition: color 0.25s;
+    }
+    nav a::after {
+      content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 1px;
+      background: var(--caramel); transition: width 0.35s var(--ease-silk);
+    }
+    nav a:hover { color: var(--caramel); }
+    nav a:hover::after { width: 100%; }
+    .header-actions { display: flex; gap: 1rem; align-items: center; }
+    .cart-btn {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--mocha); padding: 0.5rem 1.1rem;
+      border: 1px solid rgba(61,43,31,0.25);
+      border-radius: 2px; transition: all 0.25s var(--ease-gentle);
+    }
+    .cart-btn:hover { background: var(--mocha); color: var(--cream); }
+    .cart-count {
+      background: var(--caramel); color: white;
+      width: 18px; height: 18px; border-radius: 50%;
+      font-size: 0.7rem; display: flex; align-items: center; justify-content: center;
+      font-weight: 500;
+    }
+    .burger {
+      display: none; flex-direction: column; gap: 5px;
+      width: 28px; padding: 4px 0; cursor: pointer;
+    }
+    .burger span {
+      display: block; height: 1px; background: var(--mocha);
+      transition: all 0.3s var(--ease-silk);
+    }
+
+    /* ===== MOBILE MENU ===== */
+    .mobile-menu {
+      position: fixed; inset: 0; z-index: 99;
+      background: var(--cream);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 2.5rem;
+      transform: translateX(100%);
+      transition: transform 0.5s var(--ease-silk);
+    }
+    .mobile-menu.open { transform: translateX(0); }
+    .mobile-menu a {
+      font-family: var(--font-display); font-size: 2.5rem; font-weight: 300;
+      letter-spacing: 0.05em; color: var(--mocha);
+      transition: color 0.25s;
+    }
+    .mobile-menu a:hover { color: var(--caramel); }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100svh;
+      padding-top: var(--header-h);
+      display: grid; grid-template-columns: 1fr 1fr;
+      position: relative; overflow: hidden;
+    }
+    .hero-content {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 6rem; padding-left: 0;
+      position: relative; z-index: 2;
+    }
+    .hero-eyebrow {
+      font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--caramel); margin-bottom: 1.5rem;
+      font-weight: 400;
+    }
+    .hero-title {
+      font-family: var(--font-display); font-weight: 300;
+      font-size: clamp(3.5rem, 6vw, 6.5rem); line-height: 1.05;
+      color: var(--mocha); margin-bottom: 1.75rem;
+    }
+    .hero-title em { font-style: italic; color: var(--caramel); }
+    .hero-sub {
+      font-size: 1rem; color: rgba(61,43,31,0.65); max-width: 380px;
+      margin-bottom: 2.75rem; line-height: 1.75;
+    }
+    .hero-ctas { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--mocha); color: var(--cream);
+      padding: 0.9rem 2.25rem; font-size: 0.78rem;
+      letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400;
+      border-radius: 2px; transition: all 0.3s var(--ease-silk);
+      display: inline-flex; align-items: center; gap: 0.6rem;
+    }
+    .btn-primary:hover { background: var(--caramel); transform: translateY(-2px); }
+    .btn-outline {
+      border: 1px solid rgba(61,43,31,0.3); color: var(--mocha);
+      padding: 0.9rem 2.25rem; font-size: 0.78rem;
+      letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400;
+      border-radius: 2px; transition: all 0.3s var(--ease-silk);
+      display: inline-flex; align-items: center; gap: 0.6rem;
+    }
+    .btn-outline:hover { border-color: var(--caramel); color: var(--caramel); transform: translateY(-2px); }
+    .hero-visual {
+      position: relative; overflow: hidden;
+      background: var(--cream-dark);
+    }
+    .hero-img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 8s var(--ease-gentle);
+    }
+    .hero:hover .hero-img { transform: scale(1.03); }
+    .hero-badge {
+      position: absolute; bottom: 2.5rem; left: 2.5rem;
+      background: rgba(247,240,230,0.92); backdrop-filter: blur(12px);
+      border: 1px solid rgba(184,132,58,0.2);
+      padding: 1rem 1.5rem; border-radius: 4px;
+    }
+    .hero-badge-num {
+      font-family: var(--font-display); font-size: 2rem; font-weight: 600;
+      color: var(--caramel); line-height: 1;
+    }
+    .hero-badge-text { font-size: 0.72rem; letter-spacing: 0.1em; color: var(--mocha); margin-top: 0.2rem; }
+
+    /* SVG placeholder for dessert images */
+    .img-placeholder {
+      width: 100%; height: 100%; min-height: 280px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--cream-dark); position: relative; overflow: hidden;
+    }
+    .img-placeholder svg { width: 60%; max-width: 220px; opacity: 0.35; }
+    .img-placeholder::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--blush) 0%, var(--cream-darker, #d9ccb8) 100%);
+    }
+    .img-placeholder > * { position: relative; }
+
+    /* Dessert-specific placeholder colors */
+    .ph-cake { --ph-from: #E8D5C0; --ph-to: #C4A882; }
+    .ph-cake::before { background: linear-gradient(135deg, #E8D5C0, #C4A882); }
+    .ph-macro { --ph-from: #F0C8D0; --ph-to: #D4889C; }
+    .ph-macro::before { background: linear-gradient(135deg, #F0C8D0, #D4889C); }
+    .ph-cup { --ph-from: #C8DDD0; --ph-to: #8AB89A; }
+    .ph-cup::before { background: linear-gradient(135deg, #C8DDD0, #8AB89A); }
+    .ph-wed { --ph-from: #E8E0F0; --ph-to: #C4B4D8; }
+    .ph-wed::before { background: linear-gradient(135deg, #E8E0F0, #C4B4D8); }
+    .ph-bento { --ph-from: #F0E0C8; --ph-to: #D4A870; }
+    .ph-bento::before { background: linear-gradient(135deg, #F0E0C8, #D4A870); }
+
+    /* ===== SECTION SHARED ===== */
+    section { padding: clamp(4rem, 8vw, 8rem) var(--gutter); }
+    .container { max-width: var(--max-w); margin: 0 auto; }
+    .section-eyebrow {
+      font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--caramel); margin-bottom: 0.75rem; font-weight: 400;
+    }
+    .section-title {
+      font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300; color: var(--mocha); line-height: 1.1;
+    }
+    .section-title em { font-style: italic; }
+    .section-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 3.5rem; gap: 1rem;
+    }
+    .see-all {
+      font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--caramel); border-bottom: 1px solid currentColor;
+      padding-bottom: 2px; white-space: nowrap;
+      transition: opacity 0.2s;
+    }
+    .see-all:hover { opacity: 0.7; }
+
+    /* ===== CATEGORIES ===== */
+    .categories { background: var(--white); }
+    .cat-grid {
+      display: grid; grid-template-columns: repeat(6, 1fr);
+      gap: 1.25rem;
+    }
+    .cat-card {
+      border-radius: 4px; overflow: hidden;
+      cursor: pointer; position: relative;
+      aspect-ratio: 3/4;
+      transition: transform 0.4s var(--ease-silk);
+    }
+    .cat-card:hover { transform: translateY(-6px); }
+    .cat-card .img-placeholder { aspect-ratio: 3/4; min-height: unset; }
+    .cat-card-info {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 1.5rem 1rem;
+      background: linear-gradient(to top, rgba(26,20,16,0.72) 0%, transparent 100%);
+    }
+    .cat-card-name {
+      font-family: var(--font-display); font-size: 1.1rem; font-weight: 400;
+      color: white; letter-spacing: 0.03em;
+    }
+
+    /* ===== PRODUCTS ===== */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    .product-card {
+      border-radius: 4px; overflow: hidden;
+      background: var(--white);
+      transition: transform 0.4s var(--ease-silk), box-shadow 0.4s var(--ease-silk);
+    }
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(26,20,16,0.1);
+    }
+    .product-img {
+      aspect-ratio: 4/3; overflow: hidden;
+      position: relative;
+    }
+    .product-img .img-placeholder { aspect-ratio: 4/3; min-height: unset; }
+    .product-badge {
+      position: absolute; top: 1rem; left: 1rem;
+      background: var(--caramel); color: white;
+      font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.25rem 0.65rem; border-radius: 2px;
+    }
+    .product-info { padding: 1.5rem; }
+    .product-name {
+      font-family: var(--font-display); font-size: 1.25rem;
+      font-weight: 400; color: var(--mocha); margin-bottom: 0.4rem;
+    }
+    .product-desc {
+      font-size: 0.82rem; color: rgba(61,43,31,0.6);
+      line-height: 1.6; margin-bottom: 1.25rem;
+    }
+    .product-footer { display: flex; align-items: center; justify-content: space-between; }
+    .product-price {
+      font-family: var(--font-display); font-size: 1.4rem;
+      font-weight: 600; color: var(--mocha);
+    }
+    .product-price span { font-size: 0.75rem; font-weight: 300; font-family: var(--font-body); }
+    .add-btn {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--mocha); color: var(--cream);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; transition: all 0.25s var(--ease-silk);
+    }
+    .add-btn:hover { background: var(--caramel); transform: scale(1.1); }
+
+    /* ===== PERKS ===== */
+    .perks { background: var(--mocha); }
+    .perks .section-title { color: var(--cream); }
+    .perks .section-eyebrow { color: var(--caramel-light); }
+    .perks-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 3rem; margin-top: 3.5rem;
+    }
+    .perk { text-align: center; }
+    .perk-icon {
+      width: 52px; height: 52px; margin: 0 auto 1.25rem;
+      border: 1px solid rgba(212,168,92,0.4); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+    }
+    .perk-name {
+      font-family: var(--font-display); font-size: 1.15rem;
+      color: var(--cream); margin-bottom: 0.5rem;
+    }
+    .perk-desc { font-size: 0.82rem; color: rgba(247,240,230,0.55); line-height: 1.7; }
+
+    /* ===== GALLERY ===== */
+    .gallery { background: var(--cream-dark); }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: auto auto;
+      gap: 1rem;
+    }
+    .gallery-item {
+      overflow: hidden; border-radius: 4px;
+      cursor: pointer; position: relative;
+      transition: transform 0.4s var(--ease-silk);
+    }
+    .gallery-item:hover { transform: scale(0.98); }
+    .gallery-item:first-child { grid-column: span 2; grid-row: span 2; }
+    .gallery-item .img-placeholder { height: 100%; min-height: 200px; }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: rgba(26,20,16,0); display: flex; align-items: center; justify-content: center;
+      transition: background 0.3s;
+      font-size: 1.5rem; color: white; opacity: 0;
+    }
+    .gallery-item:hover .gallery-overlay { background: rgba(26,20,16,0.35); opacity: 1; }
+
+    /* ===== CTA STRIP ===== */
+    .cta-strip {
+      background: linear-gradient(135deg, var(--caramel) 0%, var(--caramel-light) 100%);
+      padding: 5rem var(--gutter); text-align: center;
+    }
+    .cta-strip .section-title { color: white; margin-bottom: 0.75rem; }
+    .cta-strip p { color: rgba(255,255,255,0.8); margin-bottom: 2rem; font-size: 1rem; }
+    .btn-white {
+      background: white; color: var(--mocha);
+      padding: 0.95rem 2.5rem; font-size: 0.8rem;
+      letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400;
+      border-radius: 2px; transition: all 0.3s var(--ease-silk);
+      display: inline-block;
+    }
+    .btn-white:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.15); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--espresso); color: rgba(247,240,230,0.55);
+      padding: 4rem var(--gutter) 2rem;
+    }
+    .footer-inner {
+      max-width: var(--max-w); margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem;
+    }
+    .footer-brand .logo { color: var(--cream); margin-bottom: 1rem; }
+    .footer-brand p { font-size: 0.83rem; line-height: 1.75; max-width: 260px; }
+    .footer-social { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+    .social-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid rgba(247,240,230,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; transition: all 0.25s;
+    }
+    .social-btn:hover { border-color: var(--caramel); color: var(--caramel); }
+    .footer-col h4 {
+      font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--cream); margin-bottom: 1.25rem; font-weight: 400;
+    }
+    .footer-col a {
+      display: block; font-size: 0.83rem; margin-bottom: 0.7rem;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--caramel); }
+    .footer-bottom {
+      max-width: var(--max-w); margin: 2.5rem auto 0;
+      padding-top: 1.5rem; border-top: 1px solid rgba(247,240,230,0.08);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.75rem;
+    }
+    .whatsapp-float, .tg-float {
+      position: fixed; right: 1.5rem; border-radius: 50%;
+      width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+      transition: transform 0.25s var(--ease-silk);
+      z-index: 90;
+    }
+    .whatsapp-float { bottom: 5.5rem; background: #25D366; }
+    .tg-float { bottom: 1.5rem; background: #0088cc; }
+    .whatsapp-float:hover, .tg-float:hover { transform: scale(1.12); }
+
+    /* ===== CATALOG PAGE ===== */
+    .catalog-hero {
+      padding-top: calc(var(--header-h) + 4rem);
+      padding-bottom: 3rem;
+      padding-left: var(--gutter); padding-right: var(--gutter);
+      background: var(--white);
+    }
+    .catalog-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; color: var(--mocha); }
+    .cat-tabs {
+      display: flex; gap: 0; flex-wrap: nowrap; overflow-x: auto;
+      border-bottom: 1px solid rgba(61,43,31,0.12);
+      margin-bottom: 2.5rem; padding-bottom: 0;
+      scrollbar-width: none;
+    }
+    .cat-tabs::-webkit-scrollbar { display: none; }
+    .cat-tab {
+      padding: 1rem 1.5rem; font-size: 0.8rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: rgba(61,43,31,0.5); white-space: nowrap;
+      border-bottom: 2px solid transparent; transition: all 0.25s;
+      cursor: pointer; margin-bottom: -1px;
+    }
+    .cat-tab.active { color: var(--mocha); border-bottom-color: var(--caramel); }
+    .cat-tab:hover { color: var(--mocha); }
+
+    /* ===== CART PAGE ===== */
+    .cart-page {
+      padding-top: calc(var(--header-h) + 4rem);
+      padding-left: var(--gutter); padding-right: var(--gutter);
+      min-height: 100vh;
+    }
+    .cart-layout { display: grid; grid-template-columns: 1fr 380px; gap: 3rem; max-width: var(--max-w); margin: 0 auto; }
+    .cart-item {
+      display: flex; gap: 1.5rem; padding: 1.75rem 0;
+      border-bottom: 1px solid rgba(61,43,31,0.1);
+    }
+    .cart-item-img {
+      width: 100px; height: 100px; border-radius: 4px; overflow: hidden;
+      flex-shrink: 0;
+    }
+    .cart-item-img .img-placeholder { min-height: unset; height: 100%; }
+    .cart-item-info { flex: 1; }
+    .cart-item-name { font-family: var(--font-display); font-size: 1.2rem; color: var(--mocha); margin-bottom: 0.25rem; }
+    .cart-item-desc { font-size: 0.8rem; color: rgba(61,43,31,0.55); margin-bottom: 0.75rem; }
+    .qty-control { display: flex; align-items: center; gap: 0.75rem; }
+    .qty-btn {
+      width: 30px; height: 30px; border: 1px solid rgba(61,43,31,0.25);
+      border-radius: 2px; display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; transition: all 0.2s;
+    }
+    .qty-btn:hover { background: var(--mocha); color: var(--cream); }
+    .qty-num { font-family: var(--font-display); font-size: 1.1rem; min-width: 24px; text-align: center; }
+    .cart-item-price { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--mocha); align-self: flex-start; }
+    .cart-remove { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(61,43,31,0.4); cursor: pointer; margin-top: 0.5rem; transition: color 0.2s; }
+    .cart-remove:hover { color: #c0392b; }
+    .cart-summary {
+      background: var(--white); border-radius: 4px; padding: 2rem;
+      position: sticky; top: calc(var(--header-h) + 2rem);
+      height: fit-content;
+    }
+    .summary-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; color: var(--mocha); margin-bottom: 1.5rem; }
+    .summary-row { display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-size: 0.9rem; }
+    .summary-total { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid rgba(61,43,31,0.1); }
+    .summary-total-label { font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .summary-total-price { font-family: var(--font-display); font-size: 1.6rem; font-weight: 600; color: var(--mocha); }
+    .checkout-btn { width: 100%; margin-top: 1.5rem; }
+    .empty-cart { text-align: center; padding: 5rem 0; }
+    .empty-cart h2 { font-family: var(--font-display); font-size: 2rem; color: var(--mocha); margin-bottom: 1rem; }
+    .empty-cart p { color: rgba(61,43,31,0.55); margin-bottom: 2rem; }
+
+    /* ===== ORDER PAGE ===== */
+    .order-page {
+      padding-top: calc(var(--header-h) + 4rem);
+      padding-left: var(--gutter); padding-right: var(--gutter);
+      min-height: 100vh; padding-bottom: 4rem;
+    }
+    .order-layout { display: grid; grid-template-columns: 1fr 360px; gap: 3rem; max-width: var(--max-w); margin: 0 auto; }
+    .form-section { margin-bottom: 2.5rem; }
+    .form-section-title {
+      font-family: var(--font-display); font-size: 1.3rem; font-weight: 400;
+      color: var(--mocha); margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem; border-bottom: 1px solid rgba(61,43,31,0.12);
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group.full { grid-column: span 2; }
+    label { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(61,43,31,0.6); }
+    input, select, textarea {
+      background: var(--white); border: 1px solid rgba(61,43,31,0.18);
+      border-radius: 2px; padding: 0.8rem 1rem;
+      font-family: var(--font-body); font-size: 0.9rem; color: var(--mocha);
+      transition: border-color 0.25s;
+      width: 100%;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none; border-color: var(--caramel);
+      box-shadow: 0 0 0 3px rgba(184,132,58,0.12);
+    }
+    textarea { resize: vertical; min-height: 100px; }
+    .radio-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .radio-btn {
+      border: 1px solid rgba(61,43,31,0.2); border-radius: 2px;
+      padding: 0.65rem 1.25rem; cursor: pointer;
+      font-size: 0.82rem; transition: all 0.2s; text-align: center;
+    }
+    .radio-btn.selected { border-color: var(--caramel); background: rgba(184,132,58,0.08); color: var(--caramel); }
+    .radio-btn input { display: none; }
+    .order-sidebar { position: sticky; top: calc(var(--header-h) + 2rem); height: fit-content; }
+    .order-summary { background: var(--white); border-radius: 4px; padding: 1.75rem; }
+    .order-items { max-height: 260px; overflow-y: auto; margin-bottom: 1rem; }
+    .order-item { display: flex; justify-content: space-between; padding: 0.6rem 0; border-bottom: 1px solid rgba(61,43,31,0.07); font-size: 0.87rem; }
+    .payment-note {
+      margin-top: 1.25rem; background: rgba(184,132,58,0.08);
+      border: 1px solid rgba(184,132,58,0.2); border-radius: 4px;
+      padding: 1rem; font-size: 0.82rem; color: var(--mocha);
+    }
+    .payment-note strong { display: block; margin-bottom: 0.3rem; color: var(--caramel); }
+
+    /* ===== ABOUT PAGE ===== */
+    .about-hero {
+      padding-top: calc(var(--header-h) + 5rem);
+      padding-left: var(--gutter); padding-right: var(--gutter);
+      padding-bottom: 5rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+      max-width: calc(var(--max-w) + var(--gutter)*2); margin: 0 auto;
+    }
+    .about-visual { border-radius: 4px; overflow: hidden; aspect-ratio: 4/5; }
+    .about-visual .img-placeholder { height: 100%; min-height: 400px; }
+    .about-text .section-eyebrow { margin-bottom: 1rem; }
+    .about-text .section-title { margin-bottom: 1.5rem; }
+    .about-text p { color: rgba(61,43,31,0.7); line-height: 1.8; margin-bottom: 1.25rem; }
+    .about-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; margin-top: 3rem; padding-top: 2.5rem; border-top: 1px solid rgba(61,43,31,0.12); }
+    .stat-num { font-family: var(--font-display); font-size: 2.5rem; font-weight: 600; color: var(--caramel); line-height: 1; }
+    .stat-label { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(61,43,31,0.5); margin-top: 0.3rem; }
+
+    /* ===== DELIVERY PAGE ===== */
+    .info-page {
+      padding-top: calc(var(--header-h) + 4rem);
+      padding-left: var(--gutter); padding-right: var(--gutter);
+      padding-bottom: 5rem; max-width: var(--max-w); margin: 0 auto;
+    }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
+    .info-card { background: var(--white); border-radius: 4px; padding: 2rem; }
+    .info-card-icon { font-size: 1.75rem; margin-bottom: 1rem; }
+    .info-card h3 { font-family: var(--font-display); font-size: 1.25rem; color: var(--mocha); margin-bottom: 0.75rem; }
+    .info-card p { font-size: 0.87rem; color: rgba(61,43,31,0.65); line-height: 1.75; }
+    .info-card ul { font-size: 0.87rem; color: rgba(61,43,31,0.65); line-height: 1.75; padding-left: 1.2rem; list-style: disc; }
+
+    /* ===== CONTACTS PAGE ===== */
+    .contacts-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+    .contact-card { background: var(--white); border-radius: 4px; padding: 2rem; margin-bottom: 1rem; }
+    .contact-card h3 { font-family: var(--font-display); font-size: 1.2rem; color: var(--mocha); margin-bottom: 0.5rem; }
+    .contact-card a, .contact-card p { font-size: 0.9rem; color: rgba(61,43,31,0.7); }
+    .contact-card a:hover { color: var(--caramel); }
+    .map-placeholder {
+      background: var(--cream-dark); border-radius: 4px; height: 300px;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px dashed rgba(184,132,58,0.3); font-size: 0.8rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: rgba(61,43,31,0.4);
+    }
+
+    /* ===== TOAST ===== */
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+      background: var(--mocha); color: var(--cream);
+      padding: 0.85rem 1.75rem; border-radius: 4px;
+      font-size: 0.85rem; letter-spacing: 0.05em;
+      transition: transform 0.4s var(--ease-silk);
+      z-index: 200; white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ===== SUCCESS PAGE ===== */
+    .success-page {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      flex-direction: column; text-align: center; padding: 2rem var(--gutter);
+      padding-top: var(--header-h);
+    }
+    .success-icon { font-size: 4rem; margin-bottom: 1.5rem; }
+    .success-page h1 { font-family: var(--font-display); font-size: clamp(2rem,4vw,3rem); color: var(--mocha); margin-bottom: 1rem; }
+    .success-page p { color: rgba(61,43,31,0.65); max-width: 420px; line-height: 1.75; margin-bottom: 2rem; }
+
+    /* ===== ANIMATIONS ===== */
+    .fade-up {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.7s var(--ease-silk), transform 0.7s var(--ease-silk);
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-up:nth-child(2) { transition-delay: 0.1s; }
+    .fade-up:nth-child(3) { transition-delay: 0.2s; }
+    .fade-up:nth-child(4) { transition-delay: 0.3s; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .cat-grid { grid-template-columns: repeat(3,1fr); }
+      .gallery-grid { grid-template-columns: repeat(2,1fr); }
+      .gallery-item:first-child { grid-column: span 2; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .about-hero { grid-template-columns: 1fr; }
+      .about-visual { max-height: 360px; aspect-ratio: unset; }
+    }
+    @media (max-width: 768px) {
+      :root { --header-h: 62px; }
+      nav { display: none; }
+      .burger { display: flex; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-visual { min-height: 50vw; max-height: 55vh; }
+      .hero-content { padding: 3rem var(--gutter); }
+      .cat-grid { grid-template-columns: repeat(2,1fr); }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-item:first-child { grid-column: 1; grid-row: 1; }
+      .cart-layout, .order-layout { grid-template-columns: 1fr; }
+      .cart-summary, .order-sidebar { position: static; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: 1; }
+      .contacts-layout { grid-template-columns: 1fr; }
+      .info-grid { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: repeat(3,1fr); }
+      .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .footer-brand { grid-column: span 2; }
+    }
+    @media (max-width: 480px) {
+      .cat-grid { grid-template-columns: 1fr 1fr; }
+      .products-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+      .product-info { padding: 1rem; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .footer-brand { grid-column: 1; }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--cream); }
+    ::-webkit-scrollbar-thumb { background: var(--cream-deeper); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+  <!-- FLOATING BUTTONS -->
+  <a class="whatsapp-float" href="https://wa.me/77472020009" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+  <a class="tg-float" href="https://t.me/Maison Du Cake_Astana" target="_blank" title="Telegram"><i class="fab fa-telegram"></i></a>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- HEADER -->
+  <header id="header">
+    <div class="header-inner">
+      <div class="logo" onclick="goTo('home')">
+        <img src="image/logo.png" alt="Maison Du Cake">
+      </div>
+      <nav>
+        <a href="#" onclick="goTo('home')">Главная</a>
+        <a href="#" onclick="goTo('catalog')">Каталог</a>
+        <a href="#" onclick="goTo('about')">О нас</a>
+        <a href="#" onclick="goTo('delivery')">Доставка</a>
+        <a href="#" onclick="goTo('gallery-page')">Галерея</a>
+        <a href="#" onclick="goTo('contacts')">Контакты</a>
+      </nav>
+      <div class="header-actions">
+        <button class="cart-btn" onclick="goTo('cart')">
+          🛒 Корзина
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="burger" id="burger" onclick="toggleMenu()" aria-label="Меню">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#" onclick="goTo('home');toggleMenu()">Главная</a>
+    <a href="#" onclick="goTo('catalog');toggleMenu()">Каталог</a>
+    <a href="#" onclick="goTo('about');toggleMenu()">О нас</a>
+    <a href="#" onclick="goTo('delivery');toggleMenu()">Доставка</a>
+    <a href="#" onclick="goTo('gallery-page');toggleMenu()">Галерея</a>
+    <a href="#" onclick="goTo('contacts');toggleMenu()">Контакты</a>
+  </div>
+
+  <!-- ===================== HOME PAGE ===================== -->
+  <div class="page active" id="page-home">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-content">
+        <p class="hero-eyebrow">Астана · Ручная работа</p>
+        <h1 class="hero-title">Сладкое<br>искусство<br><em>без компромиссов</em></h1>
+        <p class="hero-sub">Авторские десерты, созданные с любовью. Каждый торт — это история, рассказанная через вкус.</p>
+        <div class="hero-ctas">
+          <button class="btn-primary" onclick="goTo('catalog')">Выбрать десерт →</button>
+          <button class="btn-outline" onclick="goTo('about')">Наша история</button>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="img-placeholder ph-cake">
+          <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="100" cy="150" rx="70" ry="20" fill="rgba(61,43,31,0.25)"/>
+            <rect x="40" y="80" width="120" height="75" rx="8" fill="rgba(61,43,31,0.3)"/>
+            <rect x="50" y="55" width="100" height="35" rx="8" fill="rgba(61,43,31,0.25)"/>
+            <rect x="60" y="35" width="80" height="28" rx="6" fill="rgba(61,43,31,0.2)"/>
+            <circle cx="90" cy="20" r="4" fill="rgba(184,132,58,0.6)"/>
+            <circle cx="110" cy="20" r="4" fill="rgba(184,132,58,0.6)"/>
+            <path d="M70 80 Q100 60 130 80" stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="none"/>
+            <circle cx="65" cy="115" r="8" fill="rgba(255,255,255,0.2)"/>
+            <circle cx="135" cy="100" r="6" fill="rgba(255,255,255,0.2)"/>
+          </svg>
+        </div>
+        <div class="hero-badge">
+          <div class="hero-badge-num">500+</div>
+          <div class="hero-badge-text">Счастливых клиентов</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section class="categories">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <p class="section-eyebrow fade-up">Ассортимент</p>
+            <h2 class="section-title fade-up">Наши <em>категории</em></h2>
+          </div>
+          <a href="#" class="see-all" onclick="goTo('catalog')">Все позиции</a>
+        </div>
+        <div class="cat-grid">
+          <div class="cat-card fade-up" onclick="goTo('catalog','cakes')">
+            <div class="img-placeholder ph-cake">
+              <svg viewBox="0 0 100 100" fill="none"><rect x="20" y="45" width="60" height="40" rx="6" fill="rgba(61,43,31,0.3)"/><rect x="25" y="28" width="50" height="22" rx="5" fill="rgba(61,43,31,0.22)"/><circle cx="40" cy="18" r="3" fill="rgba(184,132,58,0.7)"/><circle cx="60" cy="15" r="3" fill="rgba(184,132,58,0.7)"/></svg>
+            </div>
+            <div class="cat-card-info"><div class="cat-card-name">Торты</div></div>
+          </div>
+          <div class="cat-card fade-up" onclick="goTo('catalog','bento')">
+            <div class="img-placeholder ph-bento">
+              <svg viewBox="0 0 100 100" fill="none"><rect x="25" y="35" width="50" height="50" rx="8" fill="rgba(61,43,31,0.3)"/><rect x="30" y="20" width="40" height="20" rx="5" fill="rgba(61,43,31,0.22)"/><circle cx="50" cy="15" r="4" fill="rgba(184,132,58,0.7)"/></svg>
+            </div>
+            <div class="cat-card-info"><div class="cat-card-name">Бенто-торты</div></div>
+          </div>
+          <div class="cat-card fade-up" onclick="goTo('catalog','cupcakes')">
+            <div class="img-placeholder ph-cup">
+              <svg viewBox="0 0 100 100" fill="none"><path d="M35 55 L40 45 L60 45 L65 55 Z" fill="rgba(61,43,31,0.3)"/><ellipse cx="50" cy="45" rx="15" ry="20" fill="rgba(61,43,31,0.22)"/><ellipse cx="50" cy="26" rx="12" ry="8" fill="rgba(61,43,31,0.18)"/></svg>
+            </div>
+            <div class="cat-card-info"><div class="cat-card-name">Капкейки</div></div>
+          </div>
+          <div class="cat-card fade-up" onclick="goTo('catalog','macarons')">
+            <div class="img-placeholder ph-macro">
+              <svg viewBox="0 0 100 100" fill="none"><ellipse cx="50" cy="42" rx="22" ry="12" fill="rgba(61,43,31,0.3)"/><rect x="28" y="42" width="44" height="8" fill="rgba(255,255,255,0.25)"/><ellipse cx="50" cy="58" rx="22" ry="12" fill="rgba(61,43,31,0.22)"/><ellipse cx="75" cy="55" rx="14" ry="8" fill="rgba(61,43,31,0.18)"/></svg>
+            </div>
+            <div class="cat-card-info"><div class="cat-card-name">Макаронс</div></div>
+          </div>
+          <div class="cat-card fade-up" onclick="goTo('catalog','sets')">
+            <div class="img-placeholder ph-bento">
+              <svg viewBox="0 0 100 100" fill="none"><rect x="15" y="50" width="30" height="35" rx="5" fill="rgba(61,43,31,0.3)"/><rect x="55" y="45" width="30" height="40" rx="5" fill="rgba(61,43,31,0.25)"/><ellipse cx="30" cy="42" rx="12" ry="8" fill="rgba(61,43,31,0.2)"/><ellipse cx="70" cy="37" rx="12" ry="8" fill="rgba(61,43,31,0.18)"/></svg>
+            </div>
+            <div class="cat-card-info"><div class="cat-card-name">Наборы</div></div>
+          </div>
+          <div class="cat-card fade-up" onclick="goTo('catalog','wedding')">
+            <div class="img-placeholder ph-wed">
+              <svg viewBox="0 0 100 100" fill="none"><rect x="30" y="70" width="40" height="20" rx="5" fill="rgba(61,43,31,0.3)"/><rect x="35" y="50" width="30" height="24" rx="5" fill="rgba(61,43,31,0.25)"/><rect x="40" y="32" width="20" height="22" rx="5" fill="rgba(61,43,31,0.2)"/><rect x="44" y="18" width="12" height="18" rx="4" fill="rgba(61,43,31,0.15)"/><circle cx="50" cy="12" r="4" fill="rgba(184,132,58,0.7)"/></svg>
+            </div>
+            <div class="cat-card-info"><div class="cat-card-name">Свадебные</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BEST SELLERS -->
+    <section style="background: var(--cream);">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <p class="section-eyebrow fade-up">Хиты продаж</p>
+            <h2 class="section-title fade-up">Бестселлеры</h2>
+          </div>
+          <a href="#" class="see-all" onclick="goTo('catalog')">Весь каталог</a>
+        </div>
+        <div class="products-grid" id="bestsellers"></div>
+      </div>
+    </section>
+
+    <!-- PERKS -->
+    <section class="perks">
+      <div class="container">
+        <div style="text-align:center">
+          <p class="section-eyebrow fade-up">Почему выбирают нас</p>
+          <h2 class="section-title fade-up">Наши <em>преимущества</em></h2>
+        </div>
+        <div class="perks-grid">
+          <div class="perk fade-up">
+            <div class="perk-icon">🎂</div>
+            <div class="perk-name">Ручная работа</div>
+            <p class="perk-desc">Каждый десерт готовится вручную из свежих натуральных ингредиентов</p>
+          </div>
+          <div class="perk fade-up">
+            <div class="perk-icon">🌿</div>
+            <div class="perk-name">Натуральный состав</div>
+            <p class="perk-desc">Без искусственных красителей и консервантов. Только лучшие продукты</p>
+          </div>
+          <div class="perk fade-up">
+            <div class="perk-icon">📦</div>
+            <div class="perk-name">Безопасная упаковка</div>
+            <p class="perk-desc">Фирменная упаковка, которая сохраняет десерт в идеальном состоянии</p>
+          </div>
+          <div class="perk fade-up">
+            <div class="perk-icon">✨</div>
+            <div class="perk-name">Авторский дизайн</div>
+            <p class="perk-desc">Уникальные концепции оформления для каждого случая</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INSTAGRAM GALLERY -->
+    <section class="gallery">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <p class="section-eyebrow fade-up">@Maison Du Cake_Astana</p>
+            <h2 class="section-title fade-up">Наша <em>галерея</em></h2>
+          </div>
+          <a href="https://www.instagram.com/maison_du_cake__?igsh=NXA2dm81cG9la213" target="_blank" class="see-all">Instagram →</a>
+        </div>
+        <div class="gallery-grid">
+          <div class="gallery-item fade-up">
+            <div class="img-placeholder ph-wed" style="min-height:400px"></div>
+            <div class="gallery-overlay">❤️</div>
+          </div>
+          <div class="gallery-item fade-up">
+            <div class="img-placeholder ph-cake"></div>
+            <div class="gallery-overlay">❤️</div>
+          </div>
+          <div class="gallery-item fade-up">
+            <div class="img-placeholder ph-macro"></div>
+            <div class="gallery-overlay">❤️</div>
+          </div>
+          <div class="gallery-item fade-up">
+            <div class="img-placeholder ph-cup"></div>
+            <div class="gallery-overlay">❤️</div>
+          </div>
+          <div class="gallery-item fade-up">
+            <div class="img-placeholder ph-bento"></div>
+            <div class="gallery-overlay">❤️</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA STRIP -->
+    <div class="cta-strip">
+      <h2 class="section-title"><em>Готовы сделать заказ?</em></h2>
+      <p>Напишите нам — обсудим детали и создадим десерт вашей мечты</p>
+      <button class="btn-white" onclick="goTo('catalog')">Перейти в каталог</button>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="logo">Maison Du Cake<span style="color:var(--caramel)">.</span></div>
+          <p>Премиальная кондитерская в Астане. Авторские торты, макаронс и десерты ручной работы с 2019 года.</p>
+          <div class="footer-social">
+            <a class="social-btn" href="https://www.instagram.com/maison_du_cake__?igsh=NXA2dm81cG9la213" target="_blank">📷</a>
+            <a class="social-btn" href="https://wa.me/77472020009" target="_blank">📱</a>
+            <a class="social-btn" href="https://t.me/Maison Du Cake_Astana" target="_blank">✈️</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Каталог</h4>
+          <a href="#" onclick="goTo('catalog','cakes')">Торты</a>
+          <a href="#" onclick="goTo('catalog','bento')">Бенто-торты</a>
+          <a href="#" onclick="goTo('catalog','cupcakes')">Капкейки</a>
+          <a href="#" onclick="goTo('catalog','macarons')">Макаронс</a>
+          <a href="#" onclick="goTo('catalog','wedding')">Свадебные</a>
+        </div>
+        <div class="footer-col">
+          <h4>Информация</h4>
+          <a href="#" onclick="goTo('about')">О нас</a>
+          <a href="#" onclick="goTo('delivery')">Доставка и оплата</a>
+          <a href="#" onclick="goTo('gallery-page')">Галерея</a>
+          <a href="#" onclick="goTo('contacts')">Контакты</a>
+        </div>
+        <div class="footer-col">
+          <h4>Контакты</h4>
+          <a href="tel:+77472020009">+7 747 202 0009</a>
+          <a href="https://wa.me/77472020009">WhatsApp</a>
+          <a href="https://t.me/Maison Du Cake_Astana">Telegram</a>
+          <a href="https://www.instagram.com/maison_du_cake__?igsh=NXA2dm81cG9la213">@Maison Du Cake_Astana</a>
+          <p style="margin-top:.5rem;font-size:.8rem;opacity:.5">Астана, Казахстан</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Maison Du Cake. Все права защищены.</span>
+        <span>Сделано с ❤️ в Астане</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ===================== CATALOG PAGE ===================== -->
+  <div class="page" id="page-catalog">
+    <div class="catalog-hero">
+      <div class="container">
+        <p class="section-eyebrow">Весь ассортимент</p>
+        <h1 class="catalog-title">Каталог</h1>
+      </div>
+    </div>
+    <section style="padding-top:2rem;">
+      <div class="container">
+        <div class="cat-tabs" id="catTabs">
+          <div class="cat-tab active" onclick="filterCat('all',this)">Все</div>
+          <div class="cat-tab" onclick="filterCat('cakes',this)">Торты</div>
+          <div class="cat-tab" onclick="filterCat('bento',this)">Бенто-торты</div>
+          <div class="cat-tab" onclick="filterCat('cupcakes',this)">Капкейки</div>
+          <div class="cat-tab" onclick="filterCat('macarons',this)">Макаронс</div>
+          <div class="cat-tab" onclick="filterCat('sets',this)">Наборы</div>
+          <div class="cat-tab" onclick="filterCat('wedding',this)">Свадебные</div>
+        </div>
+        <div class="products-grid" id="catalogGrid"></div>
+      </div>
+    </section>
+    <div style="height:4rem"></div>
+  </div>
+
+  <!-- ===================== CART PAGE ===================== -->
+  <div class="page" id="page-cart">
+    <div class="cart-page">
+      <div style="max-width:var(--max-w);margin:0 auto;padding-bottom:1rem;">
+        <p class="section-eyebrow">Ваш выбор</p>
+        <h1 style="font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:300;color:var(--mocha);">Корзина</h1>
+      </div>
+      <div class="cart-layout">
+        <div id="cartItems"></div>
+        <div class="cart-summary">
+          <div class="summary-title">Итого</div>
+          <div class="summary-row"><span>Товаров</span><span id="summaryCount">0</span></div>
+          <div class="summary-row"><span>Доставка</span><span>Уточняется</span></div>
+          <div class="summary-total">
+            <span class="summary-total-label">К оплате</span>
+            <span class="summary-total-price" id="summaryTotal">0 ₸</span>
+          </div>
+          <button class="btn-primary checkout-btn" onclick="goTo('order')">Оформить заказ →</button>
+          <button class="btn-outline" style="width:100%;margin-top:1.25rem;justify-content:center;" onclick="goTo('catalog')">Продолжить покупки</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== ORDER PAGE ===================== -->
+  <div class="page" id="page-order">
+    <div class="order-page">
+      <div style="max-width:var(--max-w);margin:0 auto;padding-bottom:2rem;">
+        <p class="section-eyebrow">Финальный шаг</p>
+        <h1 style="font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:300;color:var(--mocha);">Оформление заказа</h1>
+      </div>
+      <div class="order-layout">
+        <div>
+          <!-- Personal -->
+          <div class="form-section">
+            <div class="form-section-title">Личные данные</div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Имя*</label>
+                <input type="text" id="orderName" placeholder="Ваше имя">
+              </div>
+              <div class="form-group">
+                <label>Телефон*</label>
+                <input type="tel" id="orderPhone" placeholder="+7 700 000 00 00">
+              </div>
+            </div>
+          </div>
+          <!-- Contact method -->
+          <div class="form-section">
+            <div class="form-section-title">Способ связи</div>
+            <div class="radio-group" id="contactMethod">
+              <div class="radio-btn selected" onclick="selectRadio(this,'contactMethod')">📱 WhatsApp</div>
+              <div class="radio-btn" onclick="selectRadio(this,'contactMethod')">✈️ Telegram</div>
+              <div class="radio-btn" onclick="selectRadio(this,'contactMethod')">📸 Instagram</div>
+            </div>
+          </div>
+          <!-- Delivery -->
+          <div class="form-section">
+            <div class="form-section-title">Получение</div>
+            <div class="radio-group" id="deliveryMethod" style="margin-bottom:1.25rem">
+              <div class="radio-btn selected" onclick="selectRadio(this,'deliveryMethod')">🏪 Самовывоз</div>
+              <div class="radio-btn" onclick="selectRadio(this,'deliveryMethod')">🚗 Доставка</div>
+            </div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Дата получения*</label>
+                <input type="date" id="orderDate">
+              </div>
+              <div class="form-group" id="addressGroup" style="display:none">
+                <label>Адрес доставки</label>
+                <input type="text" id="orderAddress" placeholder="Улица, дом, квартира">
+              </div>
+            </div>
+          </div>
+          <!-- Comment -->
+          <div class="form-section">
+            <div class="form-section-title">Комментарий</div>
+            <textarea id="orderComment" placeholder="Особые пожелания, надписи на торте, аллергии..."></textarea>
+          </div>
+          <!-- Payment -->
+          <div class="form-section">
+            <div class="form-section-title">Оплата</div>
+            <div class="radio-group" id="paymentMethod">
+              <div class="radio-btn selected" onclick="selectRadio(this,'paymentMethod')">✅ При подтверждении</div>
+              <div class="radio-btn" style="opacity:.5;cursor:not-allowed">💳 Kaspi (скоро)</div>
+              <div class="radio-btn" style="opacity:.5;cursor:not-allowed">💳 Stripe (скоро)</div>
+            </div>
+            <div class="payment-note">
+              <strong>Как это работает:</strong>
+              После оформления заказа мы свяжемся с вами для подтверждения и уточнения деталей оплаты.
+            </div>
+          </div>
+          <button class="btn-primary" style="padding:1.1rem 3rem;font-size:.85rem;" onclick="submitOrder()">Отправить заказ →</button>
+        </div>
+        <!-- Sidebar -->
+        <div class="order-sidebar">
+          <div class="order-summary">
+            <div class="summary-title">Ваш заказ</div>
+            <div class="order-items" id="orderItems"></div>
+            <div class="summary-total" style="margin-top:.75rem">
+              <span class="summary-total-label">Итого</span>
+              <span class="summary-total-price" id="orderTotal">0 ₸</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== SUCCESS PAGE ===================== -->
+  <div class="page" id="page-success">
+    <div class="success-page">
+      <div class="success-icon">🎂</div>
+      <h1>Заказ принят!</h1>
+      <p>Спасибо за ваш заказ. Мы свяжемся с вами в ближайшее время для подтверждения деталей.</p>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;">
+        <a href="https://wa.me/77472020009" target="_blank" class="btn-primary">📱 Написать в WhatsApp</a>
+        <button class="btn-outline" onclick="goTo('home')">На главную</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== ABOUT PAGE ===================== -->
+  <div class="page" id="page-about">
+    <div class="about-hero">
+      <div class="about-visual">
+        <div class="img-placeholder ph-wed" style="min-height:400px;"></div>
+      </div>
+      <div class="about-text">
+        <p class="section-eyebrow">Наша история</p>
+        <h1 class="section-title">Рождённые из <em>любви к сладкому</em></h1>
+        <p>Maison Du Cake — это не просто кондитерская. Это пространство, где каждый десерт создаётся с безграничным вниманием к деталям и страстью к совершенству.</p>
+        <p>Я начала Maison Du Cake с небольшой домашней кухни в 2019 году. Сегодня это не просто кондитерская, а дело всей моей жизни — место, где создаются настоящие произведения кулинарного искусства для особых моментов ваших историй.</p>
+        <p>Каждый торт, каждый макарон, каждый капкейк — это результат многолетнего опыта, отборных ингредиентов и искреннего желания сделать ваш праздник незабываемым.</p>
+        <div class="about-stats">
+          <div><div class="stat-num">6+</div><div class="stat-label">Лет опыта</div></div>
+          <div><div class="stat-num">500+</div><div class="stat-label">Клиентов</div></div>
+          <div><div class="stat-num">12</div><div class="stat-label">Наград</div></div>
+        </div>
+      </div>
+    </div>
+    <section style="background:var(--white)">
+      <div class="container">
+        <div style="text-align:center;margin-bottom:3rem">
+          <p class="section-eyebrow">Наш подход</p>
+          <h2 class="section-title">Философия <em>Maison Du Cake</em></h2>
+        </div>
+        <div class="perks-grid" style="color:var(--mocha)">
+          <div class="perk">
+            <div class="perk-icon" style="border-color:rgba(61,43,31,0.2)">🌾</div>
+            <div class="perk-name" style="color:var(--mocha)">Лучшие ингредиенты</div>
+            <p class="perk-desc" style="color:rgba(61,43,31,0.6)">Бельгийский шоколад, натуральная ваниль, свежие сливки — мы не идём на компромисс</p>
+          </div>
+          <div class="perk">
+            <div class="perk-icon" style="border-color:rgba(61,43,31,0.2)">🎨</div>
+            <div class="perk-name" style="color:var(--mocha)">Авторский дизайн</div>
+            <p class="perk-desc" style="color:rgba(61,43,31,0.6)">Каждый торт уникален. Мы создаём дизайн под ваш запрос и особый случай</p>
+          </div>
+          <div class="perk">
+            <div class="perk-icon" style="border-color:rgba(61,43,31,0.2)">⏰</div>
+            <div class="perk-name" style="color:var(--mocha)">Точно в срок</div>
+            <p class="perk-desc" style="color:rgba(61,43,31,0.6)">Мы ценим ваше время и всегда выполняем заказы к назначенной дате</p>
+          </div>
+          <div class="perk">
+            <div class="perk-icon" style="border-color:rgba(61,43,31,0.2)">💌</div>
+            <div class="perk-name" style="color:var(--mocha)">Забота о клиенте</div>
+            <p class="perk-desc" style="color:rgba(61,43,31,0.6)">На связи 7 дней в неделю — ответим на все вопросы и поможем с выбором</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===================== DELIVERY PAGE ===================== -->
+  <div class="page" id="page-delivery">
+    <div class="info-page">
+      <p class="section-eyebrow" style="margin-top:0">Информация</p>
+      <h1 class="section-title" style="margin-bottom:.5rem">Доставка и <em>оплата</em></h1>
+      <p style="color:rgba(61,43,31,0.6);margin-top:.5rem">Всё, что нужно знать перед заказом</p>
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-icon">🏪</div>
+          <h3>Самовывоз</h3>
+          <p>Вы можете забрать заказ самостоятельно по адресу:<br><strong>Астана, ул. Абая 150</strong><br><br>
+          Часы работы:<br>
+          Пн–Пт: 9:00 – 20:00<br>
+          Сб–Вс: 10:00 – 19:00<br><br>
+          Самовывоз бесплатный.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🚗</div>
+          <h3>Доставка по Астане</h3>
+          <ul>
+            <li>До 5 км от центра — 1 500 ₸</li>
+            <li>5–15 км — 2 500 ₸</li>
+            <li>Свыше 15 км — по договорённости</li>
+          </ul>
+          <p style="margin-top:.75rem">Минимальная сумма заказа для доставки — <strong>8 000 ₸</strong>.<br><br>Доставка осуществляется в день, выбранный при оформлении заказа.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">💳</div>
+          <h3>Способы оплаты</h3>
+          <ul>
+            <li>Kaspi Pay / Kaspi QR</li>
+            <li>Перевод на карту</li>
+            <li>Наличными при получении</li>
+            <li>Онлайн-оплата (скоро)</li>
+          </ul>
+          <p style="margin-top:.75rem">Предоплата 50% при подтверждении заказа. Оставшаяся сумма — при получении.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">📋</div>
+          <h3>Важно знать</h3>
+          <ul>
+            <li>Заказы принимаются за 2–3 дня</li>
+            <li>Свадебные торты — за 7–14 дней</li>
+            <li>Срок хранения: 48–72 часа</li>
+            <li>Торты хранить в холодильнике</li>
+            <li>Фото-референсы принимаем в WhatsApp/Telegram</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== GALLERY PAGE ===================== -->
+  <div class="page" id="page-gallery-page">
+    <section style="padding-top:calc(var(--header-h) + 4rem)">
+      <div class="container">
+        <p class="section-eyebrow">Портфолио</p>
+        <h1 class="section-title" style="margin-bottom:3rem">Наши <em>работы</em></h1>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem" id="fullGallery"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===================== CONTACTS PAGE ===================== -->
+  <div class="page" id="page-contacts">
+    <div class="info-page">
+      <p class="section-eyebrow">Мы всегда на связи</p>
+      <h1 class="section-title" style="margin-bottom:2.5rem">Контакты</h1>
+      <div class="contacts-layout">
+        <div>
+          <div class="contact-card">
+            <h3>📱 Телефон / WhatsApp</h3>
+            <a href="tel:+77472020009">+7 747 202 0009</a>
+          </div>
+          <div class="contact-card">
+            <h3>✈️ Telegram</h3>
+            <a href="https://t.me/Maison Du Cake_Astana" target="_blank">@Maison Du Cake_Astana</a>
+          </div>
+          <div class="contact-card">
+            <h3>📷 Instagram</h3>
+            <a href="https://www.instagram.com/maison_du_cake__?igsh=NXA2dm81cG9la213" target="_blank">@Maison Du Cake_Astana</a>
+          </div>
+          <div class="contact-card">
+            <h3>📍 Адрес</h3>
+            <p>г. Астана, ул. Абая 150<br>БЦ «Премьер», 1 этаж</p>
+          </div>
+          <div class="contact-card">
+            <h3>⏰ Режим работы</h3>
+            <p>Пн–Пт: 9:00 – 20:00<br>Сб–Вс: 10:00 – 19:00</p>
+          </div>
+        </div>
+        <div>
+          <div class="map-placeholder">Карта Астаны — ул. Абая 150</div>
+          <div style="margin-top:1.5rem">
+            <p style="font-size:.87rem;color:rgba(61,43,31,.6);margin-bottom:1rem">Напишите нам прямо сейчас:</p>
+            <div style="display:flex;gap:1rem;flex-wrap:wrap">
+              <a href="https://wa.me/77472020009" target="_blank" class="btn-primary">📱 WhatsApp</a>
+              <a href="https://t.me/Maison Du Cake_Astana" target="_blank" class="btn-outline">✈️ Telegram</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  // ===== DATA =====
+  const products = [
+    { id:1, name:'Шоколадный трюфель', cat:'cakes', price:18000, desc:'Бельгийский шоколад, ганаш, малиновый конфитюр', ph:'ph-cake', badge:'Хит' },
+    { id:2, name:'Молочный граф', cat:'cakes', price:16500, desc:'Сгущёное молоко, карамель, соль флёр де сель', ph:'ph-cake', badge:null },
+    { id:3, name:'Клубничный бенто', cat:'bento', price:7500, desc:'Ягодный крем, свежая клубника, матча', ph:'ph-bento', badge:'Новинка' },
+    { id:4, name:'Эспрессо бенто', cat:'bento', price:8000, desc:'Кофейный бисквит, маскарпоне, какао', ph:'ph-bento', badge:null },
+    { id:5, name:'Капкейки ваниль', cat:'cupcakes', price:1200, desc:'Ванильный крем, малиновое варенье', ph:'ph-cup', badge:null },
+    { id:6, name:'Капкейки Oreo', cat:'cupcakes', price:1400, desc:'Шоколадный мусс, печенье Oreo', ph:'ph-cup', badge:'Хит' },
+    { id:7, name:'Макаронс классик', cat:'macarons', price:800, desc:'Малина, фисташка, ваниль, шоколад', ph:'ph-macro', badge:null },
+    { id:8, name:'Набор «Весна»', cat:'sets', price:12000, desc:'12 макаронс + 6 капкейков в фирменной коробке', ph:'ph-bento', badge:'Подарок' },
+    { id:9, name:'Свадебный 3-ярус', cat:'wedding', price:85000, desc:'Авторский дизайн, сахарные цветы, живые цветы', ph:'ph-wed', badge:'Премиум' },
+    { id:10, name:'Фисташковый раф', cat:'cakes', price:19500, desc:'Фисташковый прали́не, белый шоколад', ph:'ph-cake', badge:null },
+    { id:11, name:'Набор «Celebration»', cat:'sets', price:18000, desc:'Торт 1кг + 10 макаронс + 4 капкейка', ph:'ph-cake', badge:'Популярный' },
+    { id:12, name:'Свадебный 2-ярус', cat:'wedding', price:55000, desc:'Нежный декор, живые цветы, лента', ph:'ph-wed', badge:null },
+  ];
+
+  let cart = JSON.parse(localStorage.getItem('Maison Du Cake_cart') || '[]');
+
+  // ===== CART FUNCTIONS =====
+  function saveCart() { localStorage.setItem('Maison Du Cake_cart', JSON.stringify(cart)); }
+  function updateCartCount() {
+    const n = cart.reduce((s,i)=>s+i.qty,0);
+    document.getElementById('cartCount').textContent = n;
+  }
+  function addToCart(id) {
+    const p = products.find(x=>x.id===id);
+    const existing = cart.find(x=>x.id===id);
+    if (existing) { existing.qty++; }
+    else { cart.push({...p, qty:1}); }
+    saveCart(); updateCartCount();
+    showToast(`«${p.name}» добавлен в корзину`);
+  }
+  function removeFromCart(id) {
+    cart = cart.filter(x=>x.id!==id);
+    saveCart(); updateCartCount(); renderCart();
+  }
+  function changeQty(id, delta) {
+    const item = cart.find(x=>x.id===id);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) { removeFromCart(id); return; }
+    saveCart(); updateCartCount(); renderCart();
+  }
+
+  // ===== RENDER PRODUCT CARD =====
+  function productCard(p) {
+    const svgs = {
+      'ph-cake': `<svg viewBox="0 0 100 100" fill="none"><rect x="20" y="45" width="60" height="40" rx="6" fill="rgba(61,43,31,0.3)"/><rect x="25" y="28" width="50" height="22" rx="5" fill="rgba(61,43,31,0.22)"/><circle cx="40" cy="18" r="3" fill="rgba(184,132,58,0.7)"/><circle cx="60" cy="15" r="3" fill="rgba(184,132,58,0.7)"/></svg>`,
+      'ph-bento': `<svg viewBox="0 0 100 100" fill="none"><rect x="25" y="35" width="50" height="50" rx="8" fill="rgba(61,43,31,0.3)"/><rect x="30" y="20" width="40" height="20" rx="5" fill="rgba(61,43,31,0.22)"/></svg>`,
+      'ph-cup': `<svg viewBox="0 0 100 100" fill="none"><path d="M35 55 L40 45 L60 45 L65 55 Z" fill="rgba(61,43,31,0.3)"/><ellipse cx="50" cy="42" rx="15" ry="20" fill="rgba(61,43,31,0.22)"/></svg>`,
+      'ph-macro': `<svg viewBox="0 0 100 100" fill="none"><ellipse cx="50" cy="42" rx="22" ry="12" fill="rgba(61,43,31,0.3)"/><rect x="28" y="42" width="44" height="8" fill="rgba(255,255,255,0.25)"/><ellipse cx="50" cy="58" rx="22" ry="12" fill="rgba(61,43,31,0.22)"/></svg>`,
+      'ph-wed': `<svg viewBox="0 0 100 100" fill="none"><rect x="30" y="70" width="40" height="20" rx="5" fill="rgba(61,43,31,0.3)"/><rect x="35" y="50" width="30" height="24" rx="5" fill="rgba(61,43,31,0.25)"/><rect x="40" y="32" width="20" height="22" rx="5" fill="rgba(61,43,31,0.2)"/></svg>`,
+    };
+    return `<div class="product-card fade-up">
+      <div class="product-img">
+        <div class="img-placeholder ${p.ph}">${svgs[p.ph]||''}</div>
+        ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ''}
+      </div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="product-footer">
+          <div class="product-price">${p.price.toLocaleString('ru-RU')} <span>₸</span></div>
+          <button class="add-btn" onclick="addToCart(${p.id})" title="В корзину">+</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // ===== RENDER PAGES =====
+  function renderBestsellers() {
+    const bests = [1,3,6,7,8,11].map(id=>products.find(p=>p.id===id)).filter(Boolean);
+    document.getElementById('bestsellers').innerHTML = bests.map(productCard).join('');
+    observeFadeUp();
+  }
+
+  let currentCat = 'all';
+  function renderCatalog(cat) {
+    currentCat = cat || 'all';
+    const list = currentCat === 'all' ? products : products.filter(p=>p.cat===currentCat);
+    document.getElementById('catalogGrid').innerHTML = list.map(productCard).join('');
+    observeFadeUp();
+  }
+  function filterCat(cat, el) {
+    document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
+    el.classList.add('active');
+    renderCatalog(cat);
+  }
+
+  function renderCart() {
+    const el = document.getElementById('cartItems');
+    if (cart.length === 0) {
+      el.innerHTML = `<div class="empty-cart"><h2>Корзина пуста</h2><p>Добавьте десерты из нашего каталога</p><button class="btn-primary" onclick="goTo('catalog')">Перейти в каталог →</button></div>`;
+      document.getElementById('summaryCount').textContent = '0';
+      document.getElementById('summaryTotal').textContent = '0 ₸';
+      return;
+    }
+    const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+    const count = cart.reduce((s,i)=>s+i.qty,0);
+    el.innerHTML = cart.map(item=>`
+      <div class="cart-item">
+        <div class="cart-item-img"><div class="img-placeholder ${item.ph}"></div></div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-desc">${item.desc}</div>
+          <div class="qty-control">
+            <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
+          </div>
+          <div class="cart-remove" onclick="removeFromCart(${item.id})">Удалить</div>
+        </div>
+        <div class="cart-item-price">${(item.price*item.qty).toLocaleString('ru-RU')} ₸</div>
+      </div>
+    `).join('');
+    document.getElementById('summaryCount').textContent = count;
+    document.getElementById('summaryTotal').textContent = total.toLocaleString('ru-RU') + ' ₸';
+  }
+
+  function renderOrderItems() {
+    const el = document.getElementById('orderItems');
+    const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+    el.innerHTML = cart.map(i=>`<div class="order-item"><span>${i.name} ×${i.qty}</span><span>${(i.price*i.qty).toLocaleString('ru-RU')} ₸</span></div>`).join('');
+    document.getElementById('orderTotal').textContent = total.toLocaleString('ru-RU') + ' ₸';
+  }
+
+  function renderGalleryFull() {
+    const phs = ['ph-cake','ph-wed','ph-macro','ph-bento','ph-cup','ph-cake','ph-wed','ph-bento','ph-macro'];
+    document.getElementById('fullGallery').innerHTML = phs.map((ph,i)=>`
+      <div class="gallery-item fade-up" style="aspect-ratio:1">
+        <div class="img-placeholder ${ph}" style="height:100%;min-height:unset"></div>
+        <div class="gallery-overlay">❤️</div>
+      </div>
+    `).join('');
+    observeFadeUp();
+  }
+
+  // ===== NAVIGATION =====
+  function goTo(page, cat) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    const el = document.getElementById('page-'+page);
+    if (el) { el.classList.add('active'); }
+    window.scrollTo({top:0, behavior:'smooth'});
+    // Re-render specific pages
+    if (page === 'catalog') renderCatalog(cat||currentCat);
+    if (page === 'cart') renderCart();
+    if (page === 'order') renderOrderItems();
+    if (page === 'gallery-page') renderGalleryFull();
+  }
+
+  // ===== MOBILE MENU =====
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu.classList.toggle('open');
+  }
+
+  // ===== RADIO BUTTONS =====
+  function selectRadio(el, groupId) {
+    const group = document.getElementById(groupId);
+    if (!group) return;
+    group.querySelectorAll('.radio-btn').forEach(b=>{
+      if (!b.style.cursor || b.style.cursor !== 'not-allowed') b.classList.remove('selected');
+    });
+    if (!el.style.cursor || el.style.cursor !== 'not-allowed') el.classList.add('selected');
+
+    // Show/hide address
+    if (groupId === 'deliveryMethod') {
+      const addressGroup = document.getElementById('addressGroup');
+      if (addressGroup) {
+        addressGroup.style.display = el.textContent.includes('Доставка') ? 'flex' : 'none';
+      }
+    }
+  }
+
+  // ===== SUBMIT ORDER =====
+  function submitOrder() {
+    const name = document.getElementById('orderName').value.trim();
+    const phone = document.getElementById('orderPhone').value.trim();
+    const date = document.getElementById('orderDate').value;
+    if (!name || !phone) { showToast('Пожалуйста, заполните имя и телефон'); return; }
+    if (cart.length === 0) { showToast('Корзина пуста'); return; }
+    cart = []; saveCart(); updateCartCount();
+    goTo('success');
+  }
+
+  // ===== TOAST =====
+  function showToast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg; el.classList.add('show');
+    setTimeout(()=>el.classList.remove('show'), 3000);
+  }
+
+  // ===== SCROLL ANIMATIONS =====
+  function observeFadeUp() {
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-up:not(.visible)').forEach(el=>obs.observe(el));
+  }
+
+  // ===== STICKY HEADER =====
+  window.addEventListener('scroll', ()=>{
+    document.getElementById('header').classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // ===== SET MIN DATE =====
+  const dateInput = document.getElementById('orderDate');
+  if (dateInput) {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 2);
+    dateInput.min = tomorrow.toISOString().split('T')[0];
+  }
+
+  // ===== INIT =====
+  renderBestsellers();
+  updateCartCount();
+  observeFadeUp();
+
+  // Observe on scroll
+  const globalObs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el=>globalObs.observe(el));
+  </script>
+</body>
+</html>

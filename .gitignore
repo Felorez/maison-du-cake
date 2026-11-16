@@ -1,0 +1,30 @@
+# added for publishing
+# secrets & local data
+.env
+.env.*
+!.env.example
+*.pickle
+*.p12
+*.pem
+*.key
+# deps / envs / builds
+node_modules/
+venv/
+.venv/
+*env/
+Lib/
+Scripts/
+Include/
+pyvenv.cfg
+__pycache__/
+*.pyc
+.next/
+# archives, logs, binaries
+*.7z
+*.zip
+*.rar
+*.log
+*.exe
+*.dll
+*.mp3
+
